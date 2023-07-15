@@ -5,6 +5,7 @@ fn main() {
     input! {
         n: usize,
         s: [String; n],
+        b: bool,
     }
 
     let mut set = HashSet::new();

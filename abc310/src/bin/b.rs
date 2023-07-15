@@ -1,4 +1,4 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
@@ -6,21 +6,32 @@ fn main() {
         m: usize,
     }
 
-    let mut data = Vec::new();
-
-    for _ in 0..n {
-        input! {
-            p: usize,
-            c: usize,
-            f: [usize; c],
-        }
-        data.push((p, c, f));
-    }
+    let mut p = vec![];
+    let mut c = vec![];
+    let mut func = vec![vec![false; m]; n];
     for i in 0..n {
-        let (p, c, f) = &data[i];
-        println!("P: {}, C: {}", p, c);
-        for j in 0..*c {
-            println!("F[{}]: {}", j + 1, f[j]);
+        input! {
+            pi: i64,
+            ci: usize,
+            f: [Usize1; ci],
+        }
+        p.push(pi);
+        c.push(ci);
+        for k in f {
+            func[i][k] = true;
         }
     }
+
+    for i in 0..n {
+        for j in (0..n).filter(|&j| i != j) {
+            if p[i] >= p[j]
+                && (0..m).filter(|k| func[i][*k]).all(|k| func[j][k])
+                && (p[i] > p[j] || c[i] < c[j])
+            {
+                println!("Yes");
+                return;
+            }
+        }
+    }
+    println!("No");
 }
